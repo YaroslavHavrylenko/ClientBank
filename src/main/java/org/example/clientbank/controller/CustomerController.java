@@ -33,11 +33,12 @@ public class CustomerController {
         return ResponseEntity.ok(customerService.getAllCustomers());
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public ResponseEntity<Customer> createCustomer(@Valid @RequestBody RequestBodyCreateCustomer body) {
         Customer customer = new Customer(body.getName(), body.getEmail(), body.getAge());
         Customer createdCustomer = customerService.createCustomer(customer);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdCustomer);
+        return ResponseEntity.ok(createdCustomer);
     }
 
     @PutMapping("/{id}")
@@ -54,20 +55,20 @@ public class CustomerController {
     }
 
     @PostMapping("/{id}/accounts")
-    public ResponseEntity<Account> createAccountForCustomer (@PathVariable Long id, @Valid @RequestBody RequestBodyCreateAccount body) {
-         Account account = customerService.createAccountForCustomer(id, body.getCurrency());
-         if (account != null) {
-             ResponseEntity.status(HttpStatus.CREATED).body(account);
-         }
-         return ResponseEntity.notFound().build();
+    public ResponseEntity<Account> createAccountForCustomer(@PathVariable Long id, @Valid @RequestBody RequestBodyCreateAccount body) {
+        Account account = customerService.createAccountForCustomer(id, body.getCurrency());
+        if (account != null) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(account);
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{customerId}/account/{accountId}")
     public ResponseEntity<Void> deleteCustomerAccount(@PathVariable long customerId, @PathVariable long accountId) {
-        boolean isDeleted =  customerService.deleteAccountForCustomer(customerId, accountId);
+        boolean isDeleted = customerService.deleteAccountForCustomer(customerId, accountId);
         if (isDeleted) {
             return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.badRequest().build() ;
+        return ResponseEntity.badRequest().build();
     }
 }

@@ -1,5 +1,6 @@
 package org.example.clientbank.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
@@ -8,6 +9,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Entity
+@Table(name = "accounts")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -15,12 +17,12 @@ import java.util.UUID;
 public class Account {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true, nullable = false)
     private String number = UUID.randomUUID().toString().replace("-", "").substring(0, 16);
 
-    @Positive
     private double balance;
 
     @Enumerated(EnumType.STRING)
@@ -30,6 +32,7 @@ public class Account {
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "customer_id", nullable = false)
+    @JsonIgnore
     private Customer customer;
 
     public Account(Currency currency, Customer customer) {

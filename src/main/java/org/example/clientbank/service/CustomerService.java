@@ -1,5 +1,6 @@
 package org.example.clientbank.service;
 
+import lombok.RequiredArgsConstructor;
 import org.example.clientbank.model.Account;
 import org.example.clientbank.model.Currency;
 import org.example.clientbank.model.Customer;
@@ -11,7 +12,7 @@ import java.util.Optional;
 
 @Service
 public class CustomerService {
-    private CustomerRepository customerRepository;
+    private final CustomerRepository customerRepository;
 
     public CustomerService(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;

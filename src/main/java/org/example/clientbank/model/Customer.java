@@ -2,15 +2,17 @@ package org.example.clientbank.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
-@Table(name = "customer")
 @Entity
+@Table(name = "customer")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,6 +21,7 @@ import java.util.stream.Collectors;
 
 public class Customer {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank
@@ -27,13 +30,13 @@ public class Customer {
     @NotBlank
     private String email;
 
-    @NotBlank
-    private Integer age;
+    @Positive
+    private int age;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "customer", orphanRemoval = true)
     private List<Account> accounts = new ArrayList<>();
 
-    public Customer(String name, String email, Integer age) {
+    public Customer(String name, String email, int age) {
         this.name = name;
         this.email = email;
         this.age = age;

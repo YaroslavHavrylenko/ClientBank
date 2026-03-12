@@ -14,6 +14,5 @@ public class RequestBodyUpdateCustomer {
     @NotBlank
     private String email;
 
-    @Positive
     private int age;
 }
